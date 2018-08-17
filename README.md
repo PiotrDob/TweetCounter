@@ -40,7 +40,7 @@ Tweets, downloaded from last full hour - but there is a limit in api calls - mor
 
 -------------  NEXT --------------------------------------
 
-- Add last auto-download in last minute of every hour for more performance in count
+- Add last auto-download in last minute of every hour for more performance in count 
 
 
 
