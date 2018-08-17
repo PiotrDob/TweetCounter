@@ -6,15 +6,11 @@ using LinqToTwitter.
 using Telegram.Bot
 
 ------------- INFO --------------------------------------
-1. Create new Twitter Application via 'https://apps.twitter.com/' and copy authentication info (first 6 settings in "Properties") to app from "Keys and Access Tokens" 
-
-tab.
+1. Create new Twitter Application via 'https://apps.twitter.com/' and copy authentication info (first 6 settings in "Properties") to app from "Keys and Access Tokens" tab.
 2. If You want to use Telegram notification ("Twitt notify 1H") option, You must to configure last 2 option (optional).
 2.1 In Telegram using 'BotFather' create new bot and copy Telegram Access Token to app.
 2.2 In Telegram create new channel (public or private).
-2.2.1 Login to Telegram via Web Browser 'https://web.telegram.org'and copy from addres channel ID, in example 'XXXXXXXXXX'(https://web.telegram.org/#/im?
-
-p=cXXXXXXXXXX_123456789012).
+2.2.1 Login to Telegram via Web Browser 'https://web.telegram.org'and copy from addres channel ID, in example 'XXXXXXXXXX'(https://web.telegram.org/#/im?p=cXXXXXXXXXX_123456789012).
 2.2.2 Combine '-100' string and ID (e.x. -100XXXXXXXXXX) and paste into app. Now You can use option described into p.2.
 2.3 Use "Update Config" option to save settings.
 
