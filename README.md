@@ -6,6 +6,7 @@ using LinqToTwitter.
 using Telegram.Bot
 
 ------------- INFO --------------------------------------
+
 1. Create new Twitter Application via 'https://apps.twitter.com/' and copy authentication info (first 6 settings in "Properties") to app from "Keys and Access Tokens" tab.
 
 2. If You want to use Telegram notification ("Twitt notify 1H") option, You must to configure last 2 option (optional).
