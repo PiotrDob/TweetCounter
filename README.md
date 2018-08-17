@@ -23,21 +23,26 @@ using Telegram.Bot
 
 Buttons and other settings
 
-- "Hashtag" textbox, write here hashtag You looking for without "#" without quotes.
-- "Except" textbox, wtite here specified words You do not want into search for hashtag with "-" every word and spaces e.x. "-do -not -download" without quotes.
-- "Search Language" textbox, write here language You want to search with specified hashtag, e.x. "en" without quotes.
+"Hashtag" textbox, write here hashtag You looking for without "#" without quotes.
 
--"ADD" button, adds data from textboxes.
--"GET" button, if You want to refresh list (it done automatically every add).
--"REMOVE" button, into datagrid below deletes hashtags from database (downloaded Tweets and Counts are not removed).
+"Except" textbox, wtite here specified words You do not want into search for hashtag with "-" every word and spaces e.x. "-do -not -download" without quotes.
 
-- "Twitt Get" checkbox download Tweets with specified hashtags added via first section eery 14,5 minute.
-- "Twitt Get" button run manual download of Tweets with specified hashtags.
-- "Count" button, compare downloaded Tweets and if have more than 2 calculations show number of Tweets in datagrid below (if in Num cell see "+" there is more than 99  
+"Search Language" textbox, write here language You want to search with specified hashtag, e.x. "en" without quotes.
 
-Tweets, downloaded from last full hour - but there is a limit in api calls - more on 'https://developer.twitter.com/en/docs/basics/rate-limits.html').
-- "Twitt notify 1H" checkbox, described in p.2.
--"Properties" checkbox, show options to configure application.
+"ADD" button, adds data from textboxes.
+
+"GET" button, if You want to refresh list (it done automatically every add).
+
+"REMOVE" button, into datagrid below deletes hashtags from database (downloaded Tweets and Counts are not removed).
+
+"Twitt Get" checkbox download Tweets with specified hashtags added via first section eery 14,5 minute.
+
+"Twitt Get" button run manual download of Tweets with specified hashtags.
+"Count" button, compare downloaded Tweets and if have more than 2 calculations show number of Tweets in datagrid below (if in Num cell see "+" there is more than 99 Tweets, downloaded from last full hour - but there is a limit in api calls - more on 'https://developer.twitter.com/en/docs/basics/rate-limits.html').
+
+"Twitt notify 1H" checkbox, described in p.2.
+
+"Properties" checkbox, show options to configure application.
 
 -------------  NEXT --------------------------------------
 
