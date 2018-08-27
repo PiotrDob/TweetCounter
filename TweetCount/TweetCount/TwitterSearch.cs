@@ -110,19 +110,33 @@ namespace TwSearch
                 string exclude = Except;
                 string lang = SearchLanguage;
 
-                if (lang != "")
+                if (lang.Length > 1)
                 {
-                    searchTerm = searchTerm + " " + exclude + "lang:" + lang;// + " exclude:replies exclude:retweets";
+                    if (exclude.Length > 1)
+                    {
+                        searchTerm = searchTerm + " " + exclude + "lang:" + lang;
+                    }
+                    else
+                    {
+                        searchTerm = searchTerm + "lang:" + lang;
+                    }
 
                 }
                 else
                 {
-                    searchTerm = searchTerm + " " + exclude;// + " exclude:replies exclude:retweets";
+                    if (exclude.Length > 1)
+                    {
+                        searchTerm = searchTerm + " " + exclude;
+                    }
+                    else
+                    {
+                        searchTerm = searchTerm;
+                    }
                 }
                 
 
                 Logs logs = new Logs();
-                logs.LogMessageToFile("Search for the tweet " + searchTerm + (DateTime.Now.ToString(" hh:mm:ss tt")));
+                logs.LogMessageToFile("Search for the tweet " + searchTerm);
 
 
                 //List<Search> searchResultsList = new List<Search>();
@@ -252,9 +266,10 @@ namespace TwSearch
                             {
                                 SQLconnect.Open();
                             }
-                            using (SQLiteCommand cmd = new SQLiteCommand("insert into TWEETS(Hashtag, CreatedAt, twH, twM, twS, ScreenNameResponse, UserIDResponse, Text, RTcount, Ticks)  values(@Hashtag, @CreatedAt, @twH, @twM, @twS, @ScreenNameResponse, @UserIDResponse, @Text, @RTcount, @Ticks)", SQLconnect))
+                            using (SQLiteCommand cmd = new SQLiteCommand("insert into TWEETS(Hashtag, SearchLanguage, CreatedAt, twH, twM, twS, ScreenNameResponse, UserIDResponse, Text, RTcount, Ticks)  values(@Hashtag,@SearchLanguage,@CreatedAt, @twH, @twM, @twS, @ScreenNameResponse, @UserIDResponse, @Text, @RTcount, @Ticks)", SQLconnect))
                             {
                                 cmd.Parameters.AddWithValue("@Hashtag", Hashtag);
+                                cmd.Parameters.AddWithValue("@SearchLanguage", SearchLanguage);
                                 cmd.Parameters.AddWithValue("@CreatedAt", tDate);
                                 cmd.Parameters.AddWithValue("@twH", twH);
                                 cmd.Parameters.AddWithValue("@twM", Minute);
@@ -380,9 +395,10 @@ namespace TwSearch
                             {
                                 SQLconnect.Open();
                             }
-                            using (SQLiteCommand cmd = new SQLiteCommand("insert into TWEETS (Hashtag,CreatedAt,twH,twM,twS,ScreenNameResponse,UserIDResponse,Text,RTcount,Ticks)  values (@Hashtag,@CreatedAt,@twH,@twM,@twS,@ScreenNameResponse,@UserIDResponse,@Text,@RTcount,@Ticks)", SQLconnect))
+                            using (SQLiteCommand cmd = new SQLiteCommand("insert into TWEETS(Hashtag, SearchLanguage, CreatedAt, twH, twM, twS, ScreenNameResponse, UserIDResponse, Text, RTcount, Ticks)  values(@Hashtag,@SearchLanguage,@CreatedAt, @twH, @twM, @twS, @ScreenNameResponse, @UserIDResponse, @Text, @RTcount, @Ticks)", SQLconnect))
                             {
                                 cmd.Parameters.AddWithValue("@Hashtag", Hashtag);
+                                cmd.Parameters.AddWithValue("@SearchLanguage", SearchLanguage);
                                 cmd.Parameters.AddWithValue("@CreatedAt", tDate);
                                 cmd.Parameters.AddWithValue("@twH", twH);
                                 cmd.Parameters.AddWithValue("@twM", Minute);
@@ -612,7 +628,7 @@ namespace TwSearch
                 Number = 0;
                 TWITTER_HELPERS.Clear();
                 Logs log = new Logs();
-                log.LogMessageToFile("Calculate Tweets about: " + element + (DateTime.Now.ToString(" hh:mm:ss tt")));
+                log.LogMessageToFile("Calculate Tweets about: " + Hashtag);
             }
 
 
