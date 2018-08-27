@@ -33,7 +33,13 @@ namespace TweetCounter
             Logic logic = new Logic();
             List<Configuration> config_list;
             logic.GetConfig(out config_list);
+            TOP_COMBO.Text = "TOP 3";
+            CONFIG_STP.Visibility = Visibility.Hidden;
+            TW_BROWSER_LBL.Visibility = Visibility.Hidden;
+            dataGrid_TWEETS_BROWSER.Visibility = Visibility.Hidden;
+            LOAD_TWBROWSER_BTN.Visibility = Visibility.Hidden;
 
+            this.TWEET_DELTA();
         }
         
         private void REMOVE_LIST_Click(object sender, RoutedEventArgs e)
@@ -210,6 +216,18 @@ namespace TweetCounter
             }
         }
 
+
+        private void TWEET_DELTA()
+        {
+                    Logic logic = new Logic();
+                    System.Timers.Timer timer = new System.Timers.Timer();
+                    timer.AutoReset = false;
+                    timer.Interval = 3600;
+                    timer.Elapsed += logic.TWITT_DELTA_Elapsed;
+                    timer.Start();    
+        }
+
+
         private void UPDATE_CONFIG_BTN_Click(object sender, RoutedEventArgs e)
         {
             Logic logic = new Logic();
@@ -220,33 +238,76 @@ namespace TweetCounter
         {
             if (PROPERTIES_CB.IsChecked == true)
             {
-                this.Width = 1220;
-                CONFIG_STP.Visibility= Visibility.Visible;
+                if (TW_BROWSER_CB.IsChecked == true)
+                {
+                    CONFIG_STP.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    this.Width = 1220;
+                    CONFIG_STP.Visibility = Visibility.Visible;
+                }
+               
             }
             if (PROPERTIES_CB.IsChecked == false)
             {
-                this.Width = 776;
-                CONFIG_STP.Visibility = Visibility.Hidden;
+                if (TW_BROWSER_CB.IsChecked == true)
+                {
+                    CONFIG_STP.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this.Width = 776;
+                    CONFIG_STP.Visibility = Visibility.Hidden;
+                }
+
             }
 
         }
 
-        private void PROPERTIES_CB_Changed(object sender, RoutedEventArgs e)
-        {
-            if (PROPERTIES_CB.IsChecked == true)
-            {
-                this.Width = 1220;
-                CONFIG_STP.Visibility = Visibility.Visible;
-            }
-            if (PROPERTIES_CB.IsChecked == false)
-            {
-                this.Width = 776;
-                CONFIG_STP.Visibility = Visibility.Hidden;
-            }
 
+        private void UPDATE_TOP_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            Logic TopTweets = new Logic();
+            TopTweets.GetTopTweets();
+        }
+
+        private void LOAD_TWBROWSER_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            Logic TopTweets = new Logic();
+            TopTweets.GetLastTweets();
+        }
+
+        private void TW_BROWSER_CB_Checked(object sender, RoutedEventArgs e)
+        {
+
+            if (TW_BROWSER_CB.IsChecked == true)
+            {
+                this.Width = 1810;
+                TW_BROWSER_LBL.Visibility = Visibility.Visible;
+                dataGrid_TWEETS_BROWSER.Visibility = Visibility.Visible;
+                LOAD_TWBROWSER_BTN.Visibility = Visibility.Visible;
+            }
+            if (TW_BROWSER_CB.IsChecked == false)
+                if (PROPERTIES_CB.IsChecked == false)
+                {
+                    this.Width = 776;
+                    TW_BROWSER_LBL.Visibility = Visibility.Hidden;
+                    dataGrid_TWEETS_BROWSER.Visibility = Visibility.Hidden;
+                    LOAD_TWBROWSER_BTN.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    this.Width = 1220;
+                    TW_BROWSER_LBL.Visibility = Visibility.Hidden;
+                    dataGrid_TWEETS_BROWSER.Visibility = Visibility.Hidden;
+                    LOAD_TWBROWSER_BTN.Visibility = Visibility.Hidden;
+                
+                }
+            }
         }
     }
-}
+
 
 
 

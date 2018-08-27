@@ -62,4 +62,25 @@ namespace TweetCounter
         public string TelegramChannel { get; set; }
 
     }
+
+    public class TopTweets
+    {
+        public string Hashtag { get; set; }
+        public string SearchLanguage { get; set; }
+        public string ScreenNameResponse { get; set; }
+        public long RTcount { get; set; }
+        public string Text { get; set; }
+    }
+
+    public class LastTweets
+    {
+        public string Hashtag { get; set; }
+        public string SearchLanguage { get; set; }
+        public string CreatedAt { get; set; }
+        public string ScreenNameResponse { get; set; }
+        public long RTcount { get; set; }
+        public string Text { get; set; }
+    }
+
+
 }

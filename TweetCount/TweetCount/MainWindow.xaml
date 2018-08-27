@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TweetCounter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="494.487" Width="776.103">
+        Title="MainWindow" Height="894" Width="776">
     <Grid>
         <TextBox x:Name="WATCHLIST_HASHTAG_TB"  x:FieldModifier="public" HorizontalAlignment="Left" Height="23" Margin="119,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="374"/>
         <RadioButton x:Name="WATCHLIST_RB" x:FieldModifier="public" Content="WATCHLIST" HorizontalAlignment="Left" Margin="20,17,0,0" VerticalAlignment="Top" Checked="WATCHLIST_RB_Checked"/>
@@ -46,8 +46,8 @@
                 <DataGridTextColumn Header="Num" Width="40" Binding="{Binding num}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <CheckBox x:Name="PROPERTIES_CB" Content="PROPERTIES" HorizontalAlignment="Left" Margin="672,108,0,0" VerticalAlignment="Top" Checked="PROPERTIES_CB_Checked" Unchecked="PROPERTIES_CB_Changed"/>
-        <StackPanel x:Name="CONFIG_STP" Margin="809,12,3,43" Orientation="Vertical">
+        <CheckBox x:Name="PROPERTIES_CB" Content="PROPERTIES" HorizontalAlignment="Left" Margin="648,108,0,0" VerticalAlignment="Top" Checked="PROPERTIES_CB_Checked" Unchecked="PROPERTIES_CB_Checked"/>
+        <StackPanel x:Name="CONFIG_STP" Margin="778,12,0,0" Orientation="Vertical" HorizontalAlignment="Left" Width="414" Height="442" VerticalAlignment="Top">
             <Label x:Name="TwitterAccessToken" Content="TwitterAccessToken" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <TextBox x:Name="TwitterAccessToken_TB" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="400"/>
             <Label x:Name="TwitterAccessTokenSecret" Content="TwitterAccessTokenSecret" HorizontalAlignment="Left" VerticalAlignment="Top"/>
@@ -66,5 +66,34 @@
             <TextBox x:Name="TelegramChannel_TB" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="400"/>
             <Button x:Name="UPDATE_CONFIG_BTN" Content="UPDATE CONFIG" HorizontalAlignment="Left" Margin="1,0,0,0" VerticalAlignment="Top" Width="94" Height="30" Click="UPDATE_CONFIG_BTN_Click"/>
         </StackPanel>
+        <DataGrid x:Name="dataGrid_TOP_TWEETS" Margin="10,490,28,77" ItemsSource="{Binding}" AutoGenerateColumns="False" HorizontalScrollBarVisibility="Auto" MaxWidth="1100" HorizontalAlignment="Left">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Hashtag" Width="150" Binding="{Binding Hashtag}"/>
+                <DataGridTextColumn Header="Lang" Width="30" Binding="{Binding SearchLanguage}"/>
+                <DataGridTextColumn Header="ScreenNameResponse" Width="100" Binding="{Binding ScreenNameResponse}"/>
+                <DataGridTextColumn Header="RTcount" Width="40" Binding="{Binding RTcount}"/>
+                <DataGridTextColumn Header="Text" Width="750" Binding="{Binding Text}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="label" Content="--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" HorizontalAlignment="Left" Margin="20,431,0,0" VerticalAlignment="Top" Width="738"/>
+        <ComboBox x:Name="TOP_COMBO" HorizontalAlignment="Left" Margin="109,459,0,0" VerticalAlignment="Top" Width="90">
+            <ComboBoxItem Content="TOP 3"/>
+            <ComboBoxItem Content="TOP 5"/>
+            <ComboBoxItem Content="TOP 10"/>
+        </ComboBox>
+        <Button x:Name="UPDATE_TOP_BTN" Content="UPDATE" HorizontalAlignment="Left" Margin="20,454,0,0" VerticalAlignment="Top" Width="74" Height="31" Click="UPDATE_TOP_BTN_Click"/>
+        <DataGrid x:Name="dataGrid_TWEETS_BROWSER" FrozenColumnCount="1" Margin="1219,55,41,77" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Hashtag" Width="Auto" Binding="{Binding Hashtag}"/>
+                <DataGridTextColumn Header="Lang" Width="30" Binding="{Binding SearchLanguage}"/>
+                <DataGridTextColumn Header="Created At" Width="120" Binding="{Binding CreatedAt}"/>
+                <DataGridTextColumn Header="ScreenNameResponse" Width="100" Binding="{Binding ScreenNameResponse}"/>
+                <DataGridTextColumn Header="RTcount" Width="50" Binding="{Binding RTcount}"/>
+                <DataGridTextColumn Header="Text" Width="750" Binding="{Binding Text}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="TW_BROWSER_LBL" Content="TWEETS BROWSER (LAST 3 DAYS)" HorizontalAlignment="Left" Margin="1485,22,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="LOAD_TWBROWSER_BTN" Content="LOAD" HorizontalAlignment="Left" Margin="1684,14,0,0" VerticalAlignment="Top" Width="77" Height="30" Click="LOAD_TWBROWSER_BTN_Click"/>
+        <CheckBox x:Name="TW_BROWSER_CB" Content="TWEETS BROWSER" HorizontalAlignment="Left" Margin="648,131,0,0" VerticalAlignment="Top" Checked="TW_BROWSER_CB_Checked" Unchecked="TW_BROWSER_CB_Checked"/>
     </Grid>
 </Window>

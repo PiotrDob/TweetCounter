@@ -12,7 +12,7 @@ using Telegram.Bot;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Windows.Threading;
-
+using System.Threading;
 
 namespace TweetCounter
 {
@@ -23,6 +23,7 @@ namespace TweetCounter
         public string telegrammessageTwitterCount;
         public static int timerTwittGet = 1;
         public static int timerTwittNotify = 1;
+        public static int timerTwittDelta = 1;
 
         DataConnection dbobject = new DataConnection();
         public static SQLiteConnection SQLconnect = new SQLiteConnection();
@@ -180,7 +181,7 @@ namespace TweetCounter
             string Count = c1.TweetSearch(mw.watchlist_list);
             Count = "";
             Logs log = new Logs();
-            log.LogMessageToFile("TWITTER GET at: " + (DateTime.Now.ToString(" hh:mm:ss tt")));
+            log.LogMessageToFile("TWITTER GET DONE");
         }
 
         public void GetConfig(out List<Configuration>config_list)
@@ -304,7 +305,7 @@ namespace TweetCounter
           
             telegrammessageTwitterCount = "";
             Logs log = new Logs();
-            log.LogMessageToFile("TWITTER COUNT calculated at: " + (DateTime.Now.ToString(" hh:mm:ss tt")));
+            log.LogMessageToFile("TWITTER COUNT DONE");
         }
 
         public async Task TwitterNotify(string telegrammessageTwitterCount)
@@ -339,25 +340,19 @@ namespace TweetCounter
                     string Count = c1.TweetSearch(mw.watchlist_list);
 
                     Logs log = new Logs();
-                    log.LogMessageToFile("TWITTER GET auto at: " + (DateTime.Now.ToString(" hh:mm:ss tt")));
+                    log.LogMessageToFile("TWITTER GET auto at: ");
                 }
-                System.Timers.Timer timer = new System.Timers.Timer();
-                timer.Enabled = false;
 
                 if (timerTwittGet == 1)
                 {
-
                     System.Timers.Timer twGT = new System.Timers.Timer();
-                    twGT.AutoReset = false;
+                    twGT.AutoReset = true;
                     twGT.Interval = 870000;
                     twGT.Elapsed += TWITT_GET_Elapsed;
                     twGT.Start();
                     timerTwittGet++;
                 }
-
-
             });
-
 
         }
         public async void TWITT_NOTIFY_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -383,31 +378,196 @@ namespace TweetCounter
                     //string result = await TwitterNotify();
                     // TwitterNotify();
                     Logs log = new Logs();
-                    log.LogMessageToFile("TWITTER COUNT auto-calculated at: " + (DateTime.Now.ToString(" hh:mm:ss tt")));
+                    log.LogMessageToFile("TWITTER COUNT auto-calculated DONE");
                 }
 
                 TwitterNotify(telegrammessageTwitterCount);
                 Logs logg = new Logs();
                 logg.LogMessageToFile("TWITTER COUNT auto-calculated ");
                 telegrammessageTwitterCount = "";
-                System.Timers.Timer timer = new System.Timers.Timer();
-                timer.Enabled = false;
 
                 if (timerTwittNotify == 1)
                 {
-
                     System.Timers.Timer twNT = new System.Timers.Timer();
                     twNT.Interval = 3600000;
-                    twNT.AutoReset = false;
+                    twNT.AutoReset = true;
                     twNT.Elapsed += TWITT_GET_Elapsed;
                     twNT.Start();
                     timerTwittNotify++;
-                }
-
-
+                }        
             });
+        }
+
+        public async void TWITT_DELTA_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (timerTwittDelta >1)
+                {
+                    if (mw.TwitterAccessToken_TB.Text != "" && mw.TwitterAccessTokenSecret_TB.Text != "" && mw.TwitterConsumerKey_TB.Text != "" && mw.TwitterConsumerSecret_TB.Text != "" && mw.TwitterAcccountToDisplay_TB.Text != "" && mw.TwitterUserID_TB.Text != "")
+                    {
+                        string retstring = TwitterDelta(sender, e);
+
+                        Logs logg = new Logs();
+                        logg.LogMessageToFile("TWITTER DELTA DOWNLOAD SET AT " + retstring);
+                    }
+                }
+                if (timerTwittDelta == 1)
+                {
+                    System.Timers.Timer twDLT = new System.Timers.Timer();
+                    twDLT.Interval = 3600000;
+                    twDLT.AutoReset = true;
+                    twDLT.Elapsed += TWITT_DELTA_Elapsed;
+                    twDLT.Start();
+                    timerTwittDelta++;
+                }                 
+            });
+        }
+
+        private string TwitterDelta(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            DateTime time = Convert.ToDateTime(DateTime.Now);
+            var HH = time.Hour;
+            var MM = time.Minute;
+
+            if (MM < 58)
+            {
+                SetUpTimer(new TimeSpan(Convert.ToInt32(HH), Convert.ToInt32("58"), Convert.ToInt32("00")));
+            }
+            else
+            {
+                if (HH == 23)
+                {
+                    HH = 0;
+                    SetUpTimer(new TimeSpan(Convert.ToInt32(HH), Convert.ToInt32("58"), Convert.ToInt32("00")));
+                }
+                else
+                {
+                    HH = HH + 1;
+                    SetUpTimer(new TimeSpan(Convert.ToInt32(HH), Convert.ToInt32("58"), Convert.ToInt32("00")));
+                }               
+            }
+            string retstring = HH + ":58:00";
+            return retstring;
+        }
+
+
+        private System.Threading.Timer timer;
+        private void SetUpTimer(TimeSpan alertTime)
+        {
+            DateTime current = DateTime.Now;
+            TimeSpan timeToGo = alertTime - current.TimeOfDay;
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return;
+            }
+            this.timer = new System.Threading.Timer(async x =>
+            {
+               await TwDelta();
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
 
         }
+
+        public async Task TwDelta()
+        {
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                TwitterSearch SearchDelta = new TwitterSearch();
+                SearchDelta.TweetSearch(mw.watchlist_list);
+            });
+            return;
+        }
+
+
+        public void GetTopTweets()
+        {
+            List <TopTweets> TopTweets_list = new List<TopTweets>();
+            string val = mw.TOP_COMBO.Text;
+            if (val == "TOP 3")
+            {
+                val = "3";
+            }
+            if (val == "TOP 5")
+            {
+                val = "5";
+            }
+            if (val == "TOP 10")
+            {
+                val = "10";
+            }
+
+            if (SQLconnect.State == ConnectionState.Closed)
+            {
+                SQLconnect.ConnectionString = dbobject.datalocation();
+                SQLconnect.Open();
+            }
+            foreach(var element in mw.watchlist_list)
+            {
+                using (SQLiteCommand cmd = new SQLiteCommand("SELECT Hashtag,SearchLanguage,ScreenNameResponse,RTcount,Text FROM TWEETS WHERE Hashtag='" + element.Hashtag + "' AND SearchLanguage ='" + element.SearchLanguage + "' ORDER BY RTcount DESC LIMIT " + val + "", SQLconnect))
+                {
+                    using (SQLiteDataReader r = cmd.ExecuteReader())
+                    {
+                        if (r != null)
+                        {
+                            while (r.Read())
+                            {
+                                TopTweets_list.Add(new TopTweets() { Hashtag = (string)r["Hashtag"], SearchLanguage = (string)r["SearchLanguage"],  ScreenNameResponse = (string)r["ScreenNameResponse"], RTcount = (Int64)r["RTcount"], Text = (string)r["Text"] });
+                            }
+                        }
+                    }
+                }
+            }
+         
+            mw.dataGrid_TOP_TWEETS.ItemsSource = null;
+            mw.dataGrid_TOP_TWEETS.ItemsSource = TopTweets_list;
+            mw.dataGrid_TOP_TWEETS.Items.Refresh();
+
+            if (SQLconnect.State == ConnectionState.Open)
+            {
+                SQLconnect.Close();
+            }
+        }
+
+        public void GetLastTweets()
+        {
+            List<LastTweets> LastTweets_list = new List<LastTweets>();
+
+            DateTime time = Convert.ToDateTime(DateTime.Now.AddDays(-3));
+            var Ticks = time.Ticks;
+
+            if (SQLconnect.State == ConnectionState.Closed)
+            {
+                SQLconnect.ConnectionString = dbobject.datalocation();
+                SQLconnect.Open();
+            }
+            foreach (var element in mw.watchlist_list)
+            {
+                using (SQLiteCommand cmd = new SQLiteCommand("SELECT Hashtag,SearchLanguage,CreatedAt,ScreenNameResponse,RTcount,Text FROM TWEETS WHERE Ticks >='"+ Ticks + "' ORDER BY Hashtag", SQLconnect))
+                {
+                    using (SQLiteDataReader r = cmd.ExecuteReader())
+                    {
+                        if (r != null)
+                        {
+                            while (r.Read())
+                            {
+                                LastTweets_list.Add(new LastTweets() { Hashtag = (string)r["Hashtag"], SearchLanguage = (string)r["SearchLanguage"], CreatedAt = (string)r["CreatedAt"], ScreenNameResponse = (string)r["ScreenNameResponse"], RTcount = (Int64)r["RTcount"], Text = (string)r["Text"] });
+                            }
+                        }
+                    }
+                }
+            }
+
+            mw.dataGrid_TWEETS_BROWSER.ItemsSource = null;
+            mw.dataGrid_TWEETS_BROWSER.ItemsSource = LastTweets_list;
+            mw.dataGrid_TWEETS_BROWSER.Items.Refresh();
+
+            if (SQLconnect.State == ConnectionState.Open)
+            {
+                SQLconnect.Close();
+            }
+        }
+
 
 
     }

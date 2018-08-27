@@ -54,7 +54,7 @@ namespace TweetCounter
                 cmd.Dispose();
             }
 
-            using (SQLiteCommand cmd = new SQLiteCommand("CREATE TABLE IF NOT EXISTS TWEETS (Hashtag TEXT, CreatedAt TEXT, twH TEXT, twM TEXT, twS TEXT, ScreenNameResponse TEXT, UserIDResponse TEXT, Text TEXT, RTcount INTEGER, Ticks TEXT )", SQLconnect))
+            using (SQLiteCommand cmd = new SQLiteCommand("CREATE TABLE IF NOT EXISTS TWEETS (Hashtag TEXT, SearchLanguage TEXT, CreatedAt TEXT, twH TEXT, twM TEXT, twS TEXT, ScreenNameResponse TEXT, UserIDResponse TEXT, Text TEXT, RTcount INTEGER, Ticks TEXT )", SQLconnect))
             {
                 cmd.ExecuteNonQuery();
                 cmd.Dispose();
